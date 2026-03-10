@@ -246,7 +246,8 @@ with tab4:
         fig_stress.update_layout(xaxis_tickangle=-45)
         # st.plotly_chart(fig_stress, use_container_width=True)
         st.plotly_chart(fig_stress, width="stretch")
-        st.dataframe(stress_df, use_container_width=True, hide_index=True)
+        # st.dataframe(stress_df, use_container_width=True, hide_index=True)
+        st.dataframe(stress_df, width="stretch", hide_index=True)
 
 with tab5:
     st.header("蒙地卡羅模擬")
