@@ -23,7 +23,7 @@ from portfolio_analyzer import (
 # Page config
 st.set_page_config(
     page_title="DataHop",
-    page_icon="images/logo.png",
+    page_icon="images/logo3.png",
     layout="wide",
     initial_sidebar_state="expanded"
 )
