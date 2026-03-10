@@ -176,7 +176,8 @@ with tab1:
             st.metric("夏普比率", f"{res.sharpe_ratio:.2f}")
             alloc_df = pd.DataFrame({'股票': res.stock_tickers, '權重': (res.weights * 100).round(1)})
             fig_pie = px.pie(alloc_df, values='權重', names='股票', title=f'{label} 配置比例')
-            st.plotly_chart(fig_pie, use_container_width=True)
+            # st.plotly_chart(fig_pie, use_container_width=True)
+            st.plotly_chart(fig_pie, width="stretch")
             st.caption("**依此配置的投資金額：**")
             for ticker, w in zip(res.stock_tickers, res.weights):
                 st.caption(f"{ticker}: {principal * w:,.0f} ({w*100:.1f}%)")
@@ -243,7 +244,8 @@ with tab4:
         fig_stress = px.bar(stress_df, x='危機事件', y='虧損', color='配置', barmode='group',
             title='各危機期間預估虧損', color_discrete_map={'保守型': '#2ecc71', '平衡型': '#f39c12', '積極型': '#e74c3c'})
         fig_stress.update_layout(xaxis_tickangle=-45)
-        st.plotly_chart(fig_stress, use_container_width=True)
+        # st.plotly_chart(fig_stress, use_container_width=True)
+        st.plotly_chart(fig_stress, width="stretch")
         st.dataframe(stress_df, use_container_width=True, hide_index=True)
 
 with tab5:
@@ -261,28 +263,32 @@ with tab5:
                 st.metric("5% 分位（較差）", f"${stats['percentile_5']:,.0f}")
                 st.metric("95% 分位（較佳）", f"${stats['percentile_95']:,.0f}")
             with col2:
-                fig_mc = make_subplots(rows=2, cols=1, subplot_titles=('模擬路徑 (抽樣100條)', '期末價值分布'), vertical_spacing=0.15)
+                fig_mc = make_subplots(rows=2, cols=1, subplot_titles=('模擬路徑 (抽樣100條)', '期末價值分布'), vertical_spacing=0.22)
                 n_show = min(100, mc_simulations)
                 for i in range(0, n_show, max(1, n_show // 20)):
                     fig_mc.add_trace(go.Scatter(y=paths[i], mode='lines', line=dict(width=1, color='rgba(100,150,255,0.3)')), row=1, col=1)
                 fig_mc.add_histogram(x=paths[:, -1], nbinsx=50, marker_color='#636efa', row=2, col=1)
-                fig_mc.update_layout(height=500, showlegend=False)
+                fig_mc.update_layout(height=650, showlegend=False, margin=dict(t=50, b=50))#新增, margin=dict(t=50, b=50).原height=500
                 fig_mc.update_xaxes(title_text="交易日", row=1, col=1)
                 fig_mc.update_xaxes(title_text="期末價值", row=2, col=1)
-                st.plotly_chart(fig_mc, use_container_width=True)
+                # st.plotly_chart(fig_mc, use_container_width=True)
+                st.plotly_chart(fig_mc, width="stretch")
+                
 
 with tab6:
     st.header("歷史股價走勢")
     norm_prices = (prices / prices.iloc[0] * 100)
     fig_price = px.line(norm_prices, title='標準化股價走勢 (基期=100)')
     fig_price.update_layout(yaxis_title="指數", xaxis_title="日期", legend_title="股票")
-    st.plotly_chart(fig_price, use_container_width=True)
+    # st.plotly_chart(fig_price, use_container_width=True)
+    st.plotly_chart(fig_price, width="stretch")
 
 with tab7:
     st.header("股票相關性矩陣")
     corr = returns.corr()
     fig_corr = px.imshow(corr, text_auto=".2f", color_continuous_scale='RdBu_r', aspect='auto')
     fig_corr.update_layout(title='報酬率相關係數')
-    st.plotly_chart(fig_corr, use_container_width=True)
+    # st.plotly_chart(fig_corr, use_container_width=True)
+    st.plotly_chart(fig_corr, width="stretch")
 
 st.success("以上結果僅供參考，投資有風險，請審慎評估。")
